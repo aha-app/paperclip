@@ -5,6 +5,12 @@ module Paperclip
     class AttachmentSizeValidator < ActiveModel::Validations::NumericalityValidator
       AVAILABLE_CHECKS = [:less_than, :less_than_or_equal_to, :greater_than, :greater_than_or_equal_to]
 
+      # Taken from Rails 6 to obtain Rails 7 compatibility
+      # https://github.com/rails/rails/blob/6-1-stable/activemodel/lib/active_model/validations/numericality.rb#LL8C1-L10C68
+      CHECKS = { greater_than: :>, greater_than_or_equal_to: :>=,
+                 equal_to: :==, less_than: :<, less_than_or_equal_to: :<=,
+                 odd: :odd?, even: :even?, other_than: :!= }.freeze
+
       def initialize(options)
         extract_options(options)
         super
